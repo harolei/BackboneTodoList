@@ -1,3 +1,5 @@
+todoApp = todoApp || {};
+
 define(['backbone', 'collections/item-list', './todo-view'],
     function(Backbone, TodoItemList, TodoView) {
         return Backbone.View.extend({
@@ -6,12 +8,12 @@ define(['backbone', 'collections/item-list', './todo-view'],
                 'change #new-todo': 'createNewItem'
             },
             initialize: function() {
-                this.todoList = new TodoItemList();
-                this.listenTo(this.todoList, 'add', this.addOne);
+                todoApp.todoList = new TodoItemList();
+                this.listenTo(todoApp.todoList, 'add', this.addOne);
             },
             createNewItem: function() {
                 if ($('#new-todo').val() != '') {
-                    this.todoList.add({
+                    todoApp.todoList.add({
                         title: this.$('#new-todo').val(),
                         completed: false
                     });

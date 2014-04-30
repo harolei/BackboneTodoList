@@ -25,6 +25,8 @@ require.config({
     }
 });
 
+var todoApp = {};
+
 require([
     'views/app-view'
 ], function (AppView) {
