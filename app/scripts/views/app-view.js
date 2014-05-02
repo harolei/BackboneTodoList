@@ -9,7 +9,7 @@ define(['backbone', 'collections/item-list', './todo-view'],
             },
             initialize: function() {
                 todoApp.todoList = new TodoItemList();
-                this.listenTo(todoApp.todoList, 'add', this.addOne);
+                this.listenTo(todoApp.todoList, 'add', this.addOne)
             },
             createNewItem: function() {
                 if ($('#new-todo').val() != '') {
