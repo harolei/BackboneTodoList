@@ -6,14 +6,14 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         template: _.template($('#item-template').html()),
         initialize: function() {
             this.$el.html(this.template(this.model.toJSON()));
-            this.$input = this.$('.edit');
             this.listenTo(this.model, 'destroy', this.remove);
-            this.listenTo(this.model, 'change:completed', this.setToggleClass)
+            this.listenTo(this.model, 'change:completed', this.setToggleClass);
         },
         events: {
             'click .destroy': 'deleteItem',
             'click .toggle': 'completeItem',
-            'dblclick label': 'editItem'
+            'dblclick label': 'editItem',
+            'blur .edit': 'endEditItem'
         },
         deleteItem: function() {
             this.model.destroy();
@@ -26,7 +26,11 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         },
         editItem: function() {
             this.$el.addClass('editing');
-            this.$input.focus();
+            this.$('.edit').focus();
+        },
+        endEditItem: function() {
+            this.$el.removeClass('editing');
+            this.$('label').text(this.$('.edit').val());
         }
     });
 });
