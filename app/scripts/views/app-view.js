@@ -1,30 +1,10 @@
-todoApp = todoApp || {};
-
-define(['backbone', 'collections/item-list', './todo-view'],
-    function(Backbone, TodoItemList, TodoView) {
+define(['backbone', 'collections/item-list', './create-view', './list-view'],
+    function(Backbone, TodoItemList, CreateView, ListView) {
         return Backbone.View.extend({
-            el: '#todoapp',
-            events: {
-                'change #new-todo': 'createNewItem'
-            },
             initialize: function() {
-                todoApp.todoList = new TodoItemList();
-                this.listenTo(todoApp.todoList, 'add', this.addOne)
-            },
-            createNewItem: function() {
-                if ($('#new-todo').val() != '') {
-                    todoApp.todoList.add({
-                        title: this.$('#new-todo').val(),
-                        completed: false
-                    });
-                    $('#new-todo').val('');
-                }
-            },
-            addOne: function(item) {
-                var todoView = new TodoView({
-                    model: item
-                });
-                $('#todo-list').append(todoView.el);
+                var todoList = new TodoItemList();
+                var createView = new CreateView({collection: todoList, el:$('#new-todo')});
+                var listView = new ListView({collection: todoList, el:$('#todo-list')});
             }
         });
     });

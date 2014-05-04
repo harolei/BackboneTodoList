@@ -1,13 +1,11 @@
-todoApp = todoApp || {};
-
 define(['underscore', 'backbone'], function(_, Backbone) {
     return Backbone.View.extend({
         tagName: 'li',
         template: _.template($('#item-template').html()),
         initialize: function() {
-            this.$el.html(this.template(this.model.toJSON()));
+            this.render();
             this.listenTo(this.model, 'destroy', this.remove);
-            this.listenTo(this.model, 'change:completed', this.setToggleClass);
+            this.listenTo(this.model, 'change', this.render);
         },
         events: {
             'click .destroy': 'deleteItem',
@@ -15,11 +13,16 @@ define(['underscore', 'backbone'], function(_, Backbone) {
             'dblclick label': 'editItem',
             'blur .edit': 'endEditItem'
         },
+        render: function() {
+            this.$el.html(this.template(this.model.toJSON()));
+            this.setToggleClass();
+            return this;
+        },
         deleteItem: function() {
             this.model.destroy();
         },
         completeItem: function() {
-            this.model.set('completed',!this.model.get('completed'));
+            this.model.setCompleted();
         },
         setToggleClass: function() {
             this.$el.toggleClass('completed', this.model.get('completed'));
@@ -30,7 +33,8 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         },
         endEditItem: function() {
             this.$el.removeClass('editing');
-            this.$('label').text(this.$('.edit').val());
+            this.model.changeTitle(this.$('.edit').val());
+            this.render();
         }
     });
 });
