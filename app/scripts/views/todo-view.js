@@ -15,7 +15,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         },
         render: function() {
             this.$el.html(this.template(this.model.toJSON()));
-            this.setToggleClass();
+            this.setCompletedClass();
             return this;
         },
         deleteItem: function() {
@@ -24,8 +24,9 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         completeItem: function() {
             this.model.setCompleted();
         },
-        setToggleClass: function() {
+        setCompletedClass: function() {
             this.$el.toggleClass('completed', this.model.get('completed'));
+            this.$('.toggle').checked = this.model.get('completed');
         },
         editItem: function() {
             this.$el.addClass('editing');
