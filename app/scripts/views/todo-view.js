@@ -9,9 +9,10 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         },
         events: {
             'click .destroy': 'deleteItem',
-            'click .toggle': 'completeItem',
+            'click .toggle': 'toggleItem',
             'dblclick label': 'editItem',
-            'blur .edit': 'endEditItem'
+            'blur .edit': 'endEditItem',
+            'change .edit': 'endEditItem'
         },
         render: function() {
             this.$el.html(this.template(this.model.toJSON()));
@@ -21,8 +22,8 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         deleteItem: function() {
             this.model.destroy();
         },
-        completeItem: function() {
-            this.model.setCompleted();
+        toggleItem: function() {
+            this.model.toggleCompleted();
         },
         setCompletedClass: function() {
             this.$el.toggleClass('completed', this.model.get('completed'));
@@ -35,7 +36,6 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         endEditItem: function() {
             this.$el.removeClass('editing');
             this.model.changeTitle(this.$('.edit').val());
-            this.render();
         }
     });
 });
